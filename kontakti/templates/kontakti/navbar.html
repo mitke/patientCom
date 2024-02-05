@@ -9,6 +9,7 @@
 
         {% if user.is_authenticated %}
 
+        <li>{{ user.username }} </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %} ">Logout</a>
         </li>

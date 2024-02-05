@@ -10,19 +10,19 @@
 
 {% else %}
 
-<div class="col-md-9 offset-md-3">
-    <h1>Login</h1>
+<div class="col-md-6 offset-md-3">
+  <h1>Login</h1>
 
-    <form action="{% url 'index' %} " method="post">
-        {% csrf_token %}
-        <div class="mb-3">
-            <input type="text" name="username" class="form-control" placeholder="Username" required>
-        </div>
-        <div class="mb-3">
-            <input type="password" name="password" class="form-control" placeholder="Password" required>
-        </div>
-        <button type="submit" class="btn btn-secondary">Login</button>
-    </form>
+  <form action="{% url 'index' %} " method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <input type="text" name="username" class="form-control" placeholder="Username" required>
+    </div>
+    <div class="mb-3">
+      <input type="password" name="password" class="form-control" placeholder="Password" required>
+    </div>
+    <button type="submit" class="btn btn-secondary">Login</button>
+  </form>
 
 </div>
 
