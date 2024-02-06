@@ -8,6 +8,32 @@
 
 <h3>Pacijenti...</h3>
 
+<table class="table table-striped table-bordered table-responsive-sm">
+  <tr class="table-dark">
+    <th>Pacijent</th>
+    <th>JMGB</th>
+    <th>doctor</th>
+    <th>dijagnoza</th>
+    <th>anestezija</th>
+    <th>poslednji kontakt</th>
+  </tr>
+  {% for patient in patients %}
+  <tr>
+    <td>{{ patient.first_name}} {{ patient.last_name}}</td>
+    <td>{{ patient.jmbg }}</td>
+    <td>{{ patient.doctor }}</td>
+    <td>{{ patient.diagnose }}</td>
+    <td>{% if patient.anestezija == True %}
+      opšta
+      {% else %}
+      lokalna
+      {% endif %}
+    </td>
+    <td>{{ patient.last_contact_date_time|date:"d.m.Y" }} {{ patient.last_contact_date_time|time:"H:i" }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
 
 {% else %}
 

@@ -24,6 +24,7 @@ class Patient(models.Model):
     zipcode = models.CharField(max_length=10)
     doctor = models.CharField(max_length=50)
     diagnose = models.CharField(max_length=100)
+    anestezija = models.BooleanField()
 
     def __str__(self):
         return self.first_name +' ' + self.last_name
@@ -31,7 +32,8 @@ class Patient(models.Model):
 class Contact(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+    #created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField()
     reserved_for = models.DateField()
     note = models.TextField()
 
