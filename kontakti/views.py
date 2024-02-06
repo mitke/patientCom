@@ -21,7 +21,7 @@ def index(request):
             return redirect('index')
     else:
         form = AuthenticationForm()
-    return render(request, 'kontakti/index.html', {'user': user, 'patients': patients})
+    return render(request, 'kontakti/index.html', {'patients': patients})
 
 
 def user_logout(request):
