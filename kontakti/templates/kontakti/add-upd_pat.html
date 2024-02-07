@@ -1,0 +1,26 @@
+{% extends "kontakti/base.html" %}
+
+{% block title %}Add/Update Patient{% endblock %}
+
+{% block content %}
+
+{% if update_mode %}
+<h1>Update Patient</h1>
+{% else %}
+<h1>Add Patient</h1>
+{% endif %}
+
+<form action="" method="post">
+  {% csrf_token %}
+
+  {{ form.as_p }}
+  <br />
+
+  {% if update_mode %}
+  <button type="submit" class="btn btn-secondary">Update Patient</button>
+  {% else %}
+  <button type="submit" class="btn btn-secondary">Add Patient</button>
+  {% endif %}
+</form>
+
+{% endblock %}

@@ -7,9 +7,10 @@
 {% if user.is_authenticated %}
 
 <h3>Pacijenti...</h3>
+<p><a class="btn btn-secondary" href="{% url 'add_patient'%}">Dodaj pacijenta</a></p>
 
 <table class="table table-striped table-bordered table-responsive-sm">
-  <tr class="table-dark">
+  <tr class="table-success">
     <th>Pacijent</th>
     <th>JMGB</th>
     <th>doctor</th>
