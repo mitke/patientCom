@@ -4,7 +4,7 @@
 
 {% block content %}
 
-{% if update_mode %}
+{% if edit_mode %}
 <h1>Update Patient</h1>
 {% else %}
 <h1>Add Patient</h1>
@@ -16,7 +16,7 @@
   {{ form.as_p }}
   <br />
 
-  {% if update_mode %}
+  {% if edit_mode %}
   <button type="submit" class="btn btn-secondary">Update Patient</button>
   {% else %}
   <button type="submit" class="btn btn-secondary">Add Patient</button>

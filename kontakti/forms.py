@@ -9,4 +9,4 @@ class AddPatientForm(forms.ModelForm):
 class AddContactForm(forms.ModelForm):
     class Meta:
         model = Contact
-        exclude = ['created_at'] 
+        exclude = ['created_at']

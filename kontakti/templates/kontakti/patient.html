@@ -1,0 +1,78 @@
+{% extends "kontakti/base.html" %}
+
+{% block title %}Kontakti sa pacijentima{% endblock %}
+
+{% block content %}
+
+<div class="container mt-3">
+  <table class="table">
+    <tr>
+      <td>
+        <h5>Pacijent</h5>
+      </td>
+      <td>{{ patient.first_name }} {{ patient.last_name }}</td>
+    </tr>
+    <tr>
+      <td>
+        <h5>JMBG</h5>
+      </td>
+      <td>{{ patient.jmbg }}</td>
+    </tr>
+    <td>
+      <h5>doctor</h5>
+    </td>
+    <td>{{ patient.doctor }}</td>
+    </tr>
+    <tr>
+      <td>
+        <h5>Dijagnoza</h5>
+      </td>
+      <td>{{ patient.diagnose }}</td>
+    </tr>
+    <tr>
+      <td>
+        <h5>Anestezija</h5>
+      </td>
+      <td>
+        {% if patient.anestezija == True %}
+        Da
+        {% else %}
+        Ne
+        {% endif %}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <h5>Grad</h5>
+      </td>
+      <td>{{ patient.city }}</td>
+    </tr>
+    <tr>
+      <td>
+        <h5>Država</h5>
+      </td>
+      <td>{{ patient.state }}</td>
+    </tr>
+    <tr>
+      <td>
+        <h5>Telefon br.</h5>
+      </td>
+      <td>{{ patient.phone }}</td>
+    </tr>
+    <tr>
+      <td>
+        <h5>Pol</h5>
+      </td>
+      <td> {% if patient.gender == True %}
+        muški
+        {% else %}
+        ženski
+        {% endif %}
+      </td>
+    </tr>
+  </table>
+  <a href="{% url 'edit_patient' patient.id %}">
+    Promeni
+  </a>
+</div>
+{% endblock %}

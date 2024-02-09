@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from .models import Patient, Contact
@@ -7,6 +7,7 @@ from django.contrib import messages
 from .forms import AddPatientForm, AddContactForm
 from django.utils import timezone
 from datetime import datetime
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     patients = Patient.objects.annotate(
@@ -33,6 +34,17 @@ def user_logout(request):
   return redirect('index')
 
 
+def patient(request, patient_id):
+  patient = Patient.objects.get(id=patient_id)
+  #contacts = Contact.objects.get(patient=patient_id)
+  return render(
+    request, 'kontakti/patient.html', {
+      'patient': patient, 
+      #'contacts': contacts
+      }
+    )
+
+
 def add_patient(request):
   form = AddPatientForm(request.POST or None)
   if request.method == 'POST':
@@ -43,6 +55,23 @@ def add_patient(request):
   
   return render(request, 'kontakti/add-upd_pat.html', {'form': form})
 
+
+def edit_patient(request, patient_id):
+  edit_mode = True
+  patient_to_edit = get_object_or_404(Patient, id=patient_id)
+  form = AddPatientForm(request.POST or None, instance=patient_to_edit)
+  first_name = patient_to_edit.first_name
+  
+  if form.is_valid():
+    form.save()
+    messages.success(request, "Podaci o pacijentu su uspešno promenjeni")
+    return redirect('patient', patient_id)
+  
+
+  return render(request, 'kontakti/add-upd_pat.html', {'form': form, 'first_name': first_name, 'edit_mode': edit_mode}) 
+
+  
+
 def add_contact(request):
   form = AddContactForm(request)
   if request.method == 'POST':
@@ -50,5 +79,5 @@ def add_contact(request):
       form.save()
       messages.success(request, "Contact added Siccesfully!")
       return redirect('index')
-  return render(request, 'kontakti/add_contact', {'form': form})
+  return render(request, 'kontakti/add_contact.html', {'form': form})
 
