@@ -32,8 +32,8 @@ class Patient(models.Model):
 class Contact(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    #created_at = models.DateTimeField(auto_now_add=True)
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    #created_at = models.DateTimeField()
     reserved_for = models.DateField()
     note = models.TextField()
 

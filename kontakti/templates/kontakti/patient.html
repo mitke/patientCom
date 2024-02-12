@@ -35,9 +35,9 @@
       </td>
       <td>
         {% if patient.anestezija == True %}
-        Da
+        opšta
         {% else %}
-        Ne
+        lokalna
         {% endif %}
       </td>
     </tr>
@@ -71,8 +71,36 @@
       </td>
     </tr>
   </table>
-  <a href="{% url 'edit_patient' patient.id %}">
-    Promeni
-  </a>
+
+  <p><a class="btn btn-secondary" href="{% url 'edit_patient' patient.id %}">Promeni</a></p>
+  <hr>
+
+  {% if contacts %}
+
+  <h4>Kontakti:</h4>
+  <table class="table table-striped table-bordered table-responsive-sm">
+    <tr class="table-success">
+      <th>Kontaktirao pacijenta</th>
+      <th>Vreme kontakta</th>
+      <th>Zakazao za</th>
+      <th>Zabeleška</th>
+    </tr>
+    {% for contact in contacts %}
+    <tr>
+      <td>{{ contact.user.first_name }} {{ contact.user.last_name }}</td>
+      <td>{{ contact.created_at }}</td>
+      <td>{{ contact.reserved_for }}</td>
+      <td>{{ contact.note }}</td>
+    </tr>
+
+
+    {% endfor %}
+  </table>
+
+  {% endif %}
+
+  <p><a class="btn btn-secondary" href="{% url 'add_contact' patient.id %}">Novi kontakt</a></p>
+
+
 </div>
 {% endblock %}

@@ -5,9 +5,9 @@
 {% block content %}
 
 {% if edit_mode %}
-<h1>Update Patient</h1>
+<h1>Promeni podatke o pacijentu</h1>
 {% else %}
-<h1>Add Patient</h1>
+<h1>Dodaj pacijenta</h1>
 {% endif %}
 
 <form action="" method="post">
@@ -17,9 +17,9 @@
   <br />
 
   {% if edit_mode %}
-  <button type="submit" class="btn btn-secondary">Update Patient</button>
+  <button type="submit" class="btn btn-secondary">Promeni</button>
   {% else %}
-  <button type="submit" class="btn btn-secondary">Add Patient</button>
+  <button type="submit" class="btn btn-secondary">Dodaj</button>
   {% endif %}
 </form>
 

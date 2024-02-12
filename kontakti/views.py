@@ -36,11 +36,11 @@ def user_logout(request):
 
 def patient(request, patient_id):
   patient = Patient.objects.get(id=patient_id)
-  #contacts = Contact.objects.get(patient=patient_id)
+  contacts = Contact.objects.filter(patient=patient_id)
   return render(
     request, 'kontakti/patient.html', {
       'patient': patient, 
-      #'contacts': contacts
+      'contacts': contacts
       }
     )
 
@@ -71,13 +71,36 @@ def edit_patient(request, patient_id):
   return render(request, 'kontakti/add-upd_pat.html', {'form': form, 'first_name': first_name, 'edit_mode': edit_mode}) 
 
   
-
-def add_contact(request):
-  form = AddContactForm(request)
+"""
+def add_contact(request, patient_id):
+  patient = Patient.objects.get(pk=patient_id) 
   if request.method == 'POST':
+    form = AddContactForm(request.POST)
     if form.is_valid:
-      form.save()
+      contact=form.save(commit=False)
+      contact.patient = patient_id
+      contact.user=request.user
+      form = contact.save()
       messages.success(request, "Contact added Siccesfully!")
-      return redirect('index')
+      return redirect('patient', patient_id)
   return render(request, 'kontakti/add_contact.html', {'form': form})
+"""
 
+@login_required
+def add_contact(request, patient_id):
+    pacijent = Patient.objects.get(pk=patient_id)
+
+    if request.method == 'POST':
+        form = AddContactForm(request.POST)
+        if form.is_valid():
+            contact = form.save(commit=False)
+            contact.patient = pacijent  # Ensure association with the specified patient
+            contact.user = request.user
+            contact.save()
+            return redirect('patient', patient_id)
+    else:
+      #form = AddContactForm(initial={'patient': patient})
+      form = AddContactForm()  # Pre-populate patient field
+
+    context = {'patient': pacijent, 'form': form}
+    return render(request, 'kontakti/add_contact.html', context)
