@@ -10,12 +10,65 @@
 <h1>Dodaj pacijenta</h1>
 {% endif %}
 
-<form action="" method="post">
+<form action="" method="post" class="row g-4">
   {% csrf_token %}
 
-  {{ form.as_p }}
-  <br />
-
+  <div class="col-md-6">
+    {{ form.first_name.label_tag }}
+    {{ form.first_name }}
+  </div>
+  <div class="col-md-6">
+    {{ form.last_name.label_tag }}
+    {{ form.last_name }}
+  </div>
+  <div class="col-md-6">
+    {{ form.date_of_birth.label_tag }}
+    {{ form.date_of_birth }}
+  </div>
+  <div class="col-md-6">
+    {{ form.jmbg.label_tag }}
+    {{ form.jmbg }}
+  </div>
+  <div class="col-md-6">
+    {{ form.gender.label_tag }}
+    {{ form.gender }}
+  </div>
+  <div class="col-md-6">
+    {{ form.email.label_tag }}
+    {{ form.email }}
+  </div>
+  <div class="col-md-6">
+    {{ form.phone.label_tag }}
+    {{ form.phone }}
+  </div>
+  <div class="col-md-6">
+    {{ form.address.label_tag }}
+    {{ form.address }}
+  </div>
+  <div class="col-md-6">
+    {{ form.city.label_tag }}
+    {{ form.city }}
+  </div>
+  <div class="col-md-6">
+    {{ form.state.label_tag }}
+    {{ form.state }}
+  </div>
+  <div class="col-md-6">
+    {{ form.zipcode.label_tag }}
+    {{ form.zipcode }}
+  </div>
+  <div class="col-md-6">
+    {{ form.doctor.label_tag }}
+    {{ form.doctor }}
+  </div>
+  <div class="col-md-6">
+    {{ form.diagnose.label_tag }}
+    {{ form.diagnose }}
+  </div>
+  <div class="col-md-6">
+    {{ form.anestezija.label_tag }}
+    {{ form.anestezija }}
+  </div>
   {% if edit_mode %}
   <button type="submit" class="btn btn-secondary">Promeni</button>
   {% else %}

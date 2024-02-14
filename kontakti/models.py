@@ -16,12 +16,12 @@ class Patient(models.Model):
         ]
     )
     gender = models.BooleanField()
-    email = models.EmailField(max_length=254)
+    email = models.EmailField(max_length=254, blank=True)
     phone = models.CharField(max_length=18 )
-    address = models.CharField(max_length=100)
+    address = models.CharField(max_length=100, blank=True)
     city = models.CharField(max_length=20)
     state = models.CharField(max_length=20)
-    zipcode = models.CharField(max_length=10)
+    zipcode = models.CharField(max_length=10, blank=True)
     doctor = models.CharField(max_length=50)
     diagnose = models.CharField(max_length=100)
     anestezija = models.BooleanField()
@@ -33,7 +33,6 @@ class Contact(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    #created_at = models.DateTimeField()
     reserved_for = models.DateField()
     note = models.TextField()
 

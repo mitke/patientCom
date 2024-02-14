@@ -1,0 +1,26 @@
+{% extends "kontakti/base.html" %}
+
+{% block title %}Add/Update Patient{% endblock %}
+
+{% block content %}
+
+{% if edit_mode %}
+<h1>Promeni podatke o pacijentu</h1>
+{% else %}
+<h1>Dodaj pacijenta</h1>
+{% endif %}
+
+<form action="" method="post" class="row g-4">
+  {% csrf_token %}
+
+  {{ form.as_p }}
+  <br />
+
+  {% if edit_mode %}
+  <button type="submit" class="btn btn-secondary">Promeni</button>
+  {% else %}
+  <button type="submit" class="btn btn-secondary">Dodaj</button>
+  {% endif %}
+</form>
+
+{% endblock %}

@@ -3,10 +3,15 @@
 {% block title %}Kontakti sa pacijentima{% endblock %}
 
 {% block content %}
-<h1>Add Contact</h1>
-<form action="" method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Submit</button>
-</form>
-{% endblock %}
+<br>
+<div>
+
+  <h1>Novi kontakt</h1>
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-secondary">Dodaj</button>
+  </form>
+  {% endblock %}
+
+</div>

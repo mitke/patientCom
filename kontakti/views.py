@@ -6,13 +6,21 @@ from django.db.models import Max
 from django.contrib import messages
 from .forms import AddPatientForm, AddContactForm
 from django.utils import timezone
-from datetime import datetime
+from datetime import date, datetime
 from django.contrib.auth.decorators import login_required
 
 def index(request):
     patients = Patient.objects.annotate(
       last_contact_date_time=Max('contact__created_at')
     ).order_by('last_contact_date_time')[:40]
+
+    for patient in patients:
+      dob = patient.date_of_birth
+      today = datetime.now().date()
+      age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+      frac_year = (today-dob.replace(year=today.year)).days / 365.25
+      age_with_dec = age + frac_year
+      patient.age = age_with_dec
     
     if request.method == 'POST':
       form = AuthenticationForm(request, data=request.POST)
@@ -34,17 +42,26 @@ def user_logout(request):
   return redirect('index')
 
 
+@login_required
 def patient(request, patient_id):
   patient = Patient.objects.get(id=patient_id)
-  contacts = Contact.objects.filter(patient=patient_id)
+  contacts = Contact.objects.filter(patient=patient_id).order_by('-created_at')
+  dob = patient.date_of_birth
+  today = datetime.now().date()
+  age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+  frac_years = (today - dob.replace(year=today.year)).days / 365.25
+  age_with_dec = age + frac_years
+  patient.age = age_with_dec # type: ignore
   return render(
     request, 'kontakti/patient.html', {
       'patient': patient, 
-      'contacts': contacts
+      'contacts': contacts,
+      #'age_with_dec': age_with_dec,
       }
     )
 
 
+@login_required
 def add_patient(request):
   form = AddPatientForm(request.POST or None)
   if request.method == 'POST':
@@ -56,6 +73,7 @@ def add_patient(request):
   return render(request, 'kontakti/add-upd_pat.html', {'form': form})
 
 
+@login_required
 def edit_patient(request, patient_id):
   edit_mode = True
   patient_to_edit = get_object_or_404(Patient, id=patient_id)
@@ -68,39 +86,37 @@ def edit_patient(request, patient_id):
     return redirect('patient', patient_id)
   
 
-  return render(request, 'kontakti/add-upd_pat.html', {'form': form, 'first_name': first_name, 'edit_mode': edit_mode}) 
+  return render(
+    request, 
+    'kontakti/add-upd_pat.html',
+    {'form': form, 'first_name': first_name, 'edit_mode': edit_mode}
+  ) 
 
   
-"""
-def add_contact(request, patient_id):
-  patient = Patient.objects.get(pk=patient_id) 
-  if request.method == 'POST':
-    form = AddContactForm(request.POST)
-    if form.is_valid:
-      contact=form.save(commit=False)
-      contact.patient = patient_id
-      contact.user=request.user
-      form = contact.save()
-      messages.success(request, "Contact added Siccesfully!")
-      return redirect('patient', patient_id)
-  return render(request, 'kontakti/add_contact.html', {'form': form})
-"""
+@login_required
+def delete_patient(request, patient_id):
+  patient = get_object_or_404(Patient, pk=patient_id)
+  patient.delete()
+  messages.success(request, "Pacijent i svi kontakti sa njim su izrisani iz baze")
+  return redirect('index')
+
+
 
 @login_required
 def add_contact(request, patient_id):
     pacijent = Patient.objects.get(pk=patient_id)
 
     if request.method == 'POST':
-        form = AddContactForm(request.POST)
-        if form.is_valid():
-            contact = form.save(commit=False)
-            contact.patient = pacijent  # Ensure association with the specified patient
-            contact.user = request.user
-            contact.save()
-            return redirect('patient', patient_id)
+      form = AddContactForm(request.POST)
+      if form.is_valid():
+        contact = form.save(commit=False)
+        contact.patient = pacijent  # Ensure association with the specified patient
+        contact.user = request.user
+        contact.save()
+        messages.success(request, "Uspešno dodat kontakt!")
+        return redirect('patient', patient_id)
     else:
-      #form = AddContactForm(initial={'patient': patient})
-      form = AddContactForm()  # Pre-populate patient field
+      form = AddContactForm()
 
     context = {'patient': pacijent, 'form': form}
     return render(request, 'kontakti/add_contact.html', context)

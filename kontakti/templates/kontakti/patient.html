@@ -14,6 +14,12 @@
     </tr>
     <tr>
       <td>
+        <h5>Datum rođenja (starost)</h5>
+      </td>
+      <td>{{ patient.date_of_birth }} <strong>({{ patient.age|floatformat:"1" }})</strong> </td>
+    </tr>
+    <tr>
+      <td>
         <h5>JMBG</h5>
       </td>
       <td>{{ patient.jmbg }}</td>
@@ -72,17 +78,20 @@
     </tr>
   </table>
 
-  <p><a class="btn btn-secondary" href="{% url 'edit_patient' patient.id %}">Promeni</a></p>
+  <p>
+    <a class="btn btn-secondary" href="{% url 'edit_patient' patient.id %}">Izmeni</a>
+    <a class="btn btn-secondary" href="{% url 'delete_patient' patient.id %}">Izbriši</a>
+  </p>
   <hr>
 
   {% if contacts %}
 
-  <h4>Kontakti:</h4>
+  <h4>Kontakti: &NonBreakingSpace; <a class="btn btn-secondary" href="{% url 'add_contact' patient.id %}">Novi kontakt</a></h4>
   <table class="table table-striped table-bordered table-responsive-sm">
     <tr class="table-success">
-      <th>Kontaktirao pacijenta</th>
+      <th>Kontaktirao/la pacijenta</th>
       <th>Vreme kontakta</th>
-      <th>Zakazao za</th>
+      <th>Zakazano za</th>
       <th>Zabeleška</th>
     </tr>
     {% for contact in contacts %}
@@ -96,11 +105,11 @@
 
     {% endfor %}
   </table>
-
+  {% else %}
+  <p>
+    <a class="btn btn-secondary" href="{% url 'add_contact' patient.id %}">Novi kontakt</a>
+  </p>
   {% endif %}
-
-  <p><a class="btn btn-secondary" href="{% url 'add_contact' patient.id %}">Novi kontakt</a></p>
-
 
 </div>
 {% endblock %}
