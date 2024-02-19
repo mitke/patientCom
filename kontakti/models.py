@@ -8,6 +8,7 @@ class Patient(models.Model):
     date_of_birth = models.DateField()
     jmbg = models.CharField(
         max_length=13,
+        blank=True,
         validators=[
             MaxLengthValidator(limit_value=13, message="JMBG must be 13 characters long"),
             MinLengthValidator(limit_value=13, message="JMBG must be 13 characters long"),
@@ -25,6 +26,7 @@ class Patient(models.Model):
     doctor = models.CharField(max_length=50)
     diagnose = models.CharField(max_length=100)
     anestezija = models.BooleanField()
+    prijavljen = models.DateField()
 
     def __str__(self):
         return self.first_name +' ' + self.last_name

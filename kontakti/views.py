@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from .models import Patient, Contact
-from django.db.models import Max
+from django.db.models import Max, Q
 from django.contrib import messages
 from .forms import AddPatientForm, AddContactForm
 from django.utils import timezone
@@ -85,7 +85,6 @@ def edit_patient(request, patient_id):
     messages.success(request, "Podaci o pacijentu su uspešno promenjeni")
     return redirect('patient', patient_id)
   
-
   return render(
     request, 
     'kontakti/add-upd_pat.html',
@@ -97,9 +96,16 @@ def edit_patient(request, patient_id):
 def delete_patient(request, patient_id):
   patient = get_object_or_404(Patient, pk=patient_id)
   patient.delete()
-  messages.success(request, "Pacijent i svi kontakti sa njim su izrisani iz baze")
+  messages.success(request, "Pacijent i svi kontakti sa njim su izbrisani iz baze")
   return redirect('index')
 
+
+def search_patient(request):
+  if request.method == 'POST':
+    search_term = request.POST.get('search_term')
+    patients = Patient.objects.filter(Q(last_name__icontains=search_term) | Q(doctor__icontains=search_term))
+  
+    return render(request, 'kontakti/index.html', {'patients': patients})
 
 
 @login_required

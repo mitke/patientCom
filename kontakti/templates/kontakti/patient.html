@@ -16,7 +16,7 @@
       <td>
         <h5>Datum rođenja (starost)</h5>
       </td>
-      <td>{{ patient.date_of_birth }} <strong>({{ patient.age|floatformat:"1" }})</strong> </td>
+      <td>{{ patient.date_of_birth|date:"d.m.Y" }} <strong>({{ patient.age|floatformat:"1" }} god.)</strong> </td>
     </tr>
     <tr>
       <td>
@@ -76,11 +76,17 @@
         {% endif %}
       </td>
     </tr>
+    <tr>
+      <td>
+        <h5>Datum prijave</h5>
+      </td>
+      <td>{{ patient.prijavljen|date:"d.m.Y" }}</td>
+    </tr>
   </table>
 
   <p>
-    <a class="btn btn-secondary" href="{% url 'edit_patient' patient.id %}">Izmeni</a>
-    <a class="btn btn-secondary" href="{% url 'delete_patient' patient.id %}">Izbriši</a>
+    <a class="btn btn-secondary" href="{% url 'edit_patient' patient.id %}">Promeni</a>
+    <a class="btn btn-danger" href="{% url 'delete_patient' patient.id %}" onclick="return confirm('Da li ste sigurni da želite da izbrišete pacijenta {{ patient }}?');">Izbriši</a>
   </p>
   <hr>
 
