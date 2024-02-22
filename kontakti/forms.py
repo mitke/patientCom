@@ -10,19 +10,21 @@ class AddPatientForm(forms.ModelForm):
     
   class Meta:
     model = Patient
-    fields = '__all__'
+    #fields = '__all__'
+    exclude = ('active',)
 
     requires = {
         'jmbg': 'False',
         'email': 'False',
         'address': 'False',
         'zipcode': 'False',
+        'note': 'False',
     }
     
     widgets = {
       'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Ime'}),
       'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Prezime'}),
-      'date_of_birth': DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+      'date_of_birth': DateInput(attrs={'type': 'date'}),
       'jmbg': TextInput(attrs={'class': 'form-control', 'placeholder': 'JMBG'}),
       'gender': CheckboxInput(attrs={'class': 'form-check-input'}),
       'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
@@ -34,7 +36,8 @@ class AddPatientForm(forms.ModelForm):
       'doctor': TextInput(attrs={'class': 'form-control', 'placeholder': 'Doktor'}),
       'diagnose': TextInput(attrs={'class': 'form-control', 'placeholder': 'Dijagnoza'}),
       'anestezija': CheckboxInput(attrs={'class': 'form-check-input'}),
-      'prijavljen': DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+      'prijavljen': DateInput(attrs={'type': 'date'}),
+      'note': forms.Textarea(attrs={'class': "form-control", 'placeholder': 'Napomena o pacijentu', 'cols': 200, 'rows': 4, 'style': 'width: 100%'}),
     }
     
     labels = {
@@ -52,7 +55,8 @@ class AddPatientForm(forms.ModelForm):
       'date_of_birth': 'Datum rođenja',
       'gender': 'Muško',
       'anestezija': 'Opšta anestezija',
-      'prijavljen': 'Datum prijavljivanja'
+      'prijavljen': 'Datum prijavljivanja',
+      'note': '',
     }
   
   def save(self, commit=True):
@@ -81,7 +85,7 @@ class AddContactForm(forms.ModelForm):
 
     widgets = {
       'reserved_for': DateInput(attrs={'type': 'date'}),
-      'note': forms.Textarea(attrs={'class': "form-control", 'placeholder': 'Zabeleška', 'cols': 200, 'rows': 4, 'style': 'width: 100%'})
+      'note': forms.Textarea(attrs={'class': "form-control", 'placeholder': 'Napomena o kontaktu', 'cols': 200, 'rows': 4, 'style': 'width: 100%'})
     }
     labels = {
       'reserved_for': 'Zakazano za:',

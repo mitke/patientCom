@@ -10,7 +10,8 @@ from datetime import date, datetime
 from django.contrib.auth.decorators import login_required
 
 def index(request):
-    patients = Patient.objects.annotate(
+    patients = Patient.objects.filter(active=True)
+    patients = patients.annotate(
       last_contact_date_time=Max('contact__created_at')
     ).order_by('last_contact_date_time')[:40]
 
@@ -95,7 +96,9 @@ def edit_patient(request, patient_id):
 @login_required
 def delete_patient(request, patient_id):
   patient = get_object_or_404(Patient, pk=patient_id)
-  patient.delete()
+  #patient.delete()
+  patient.active = False
+  patient.save()
   messages.success(request, "Pacijent i svi kontakti sa njim su izbrisani iz baze")
   return redirect('index')
 

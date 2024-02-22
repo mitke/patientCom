@@ -4,80 +4,24 @@
 
 {% block content %}
 
+<div>
+
 {% if edit_mode %}
 <h1>Promeni podatke o pacijentu</h1>
 {% else %}
 <h1>Dodaj pacijenta</h1>
 {% endif %}
 
-<form action="" method="post" class="row g-4">
+<form action="" method="post">
   {% csrf_token %}
 
-  <div class="col-md-6">
-    {{ form.first_name.label_tag }}
-    {{ form.first_name }}
-  </div>
-  <div class="col-md-6">
-    {{ form.last_name.label_tag }}
-    {{ form.last_name }}
-  </div>
-  <div class="col-md-6">
-    {{ form.date_of_birth.label_tag }}
-    {{ form.date_of_birth }}
-  </div>
-  <div class="col-md-6">
-    {{ form.jmbg.label_tag }}
-    {{ form.jmbg }}
-  </div>
-  <div class="col-md-6">
-    {{ form.gender.label_tag }}
-    {{ form.gender }}
-  </div>
-  <div class="col-md-6">
-    {{ form.email.label_tag }}
-    {{ form.email }}
-  </div>
-  <div class="col-md-6">
-    {{ form.phone.label_tag }}
-    {{ form.phone }}
-  </div>
-  <div class="col-md-6">
-    {{ form.address.label_tag }}
-    {{ form.address }}
-  </div>
-  <div class="col-md-6">
-    {{ form.city.label_tag }}
-    {{ form.city }}
-  </div>
-  <div class="col-md-6">
-    {{ form.state.label_tag }}
-    {{ form.state }}
-  </div>
-  <div class="col-md-6">
-    {{ form.zipcode.label_tag }}
-    {{ form.zipcode }}
-  </div>
-  <div class="col-md-6">
-    {{ form.doctor.label_tag }}
-    {{ form.doctor }}
-  </div>
-  <div class="col-md-6">
-    {{ form.diagnose.label_tag }}
-    {{ form.diagnose }}
-  </div>
-  <div class="col-md-6">
-    {{ form.anestezija.label_tag }}
-    {{ form.anestezija }}
-  </div>
-  <div class="col-md-6">
-    {{ form.prijavljen.label_tag }}
-    {{ form.prijavljen }}
-  </div>
+  {{ form.as_p }}
+  
   {% if edit_mode %}
   <button type="submit" class="btn btn-secondary">Promeni</button>
   {% else %}
   <button type="submit" class="btn btn-secondary">Dodaj</button>
   {% endif %}
 </form>
-
+</div>
 {% endblock %}
