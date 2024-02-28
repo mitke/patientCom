@@ -102,7 +102,7 @@
     </tr>
     {% for contact in contacts %}
     <tr>
-      <td>{{ contact.user.first_name }} {{ contact.user.last_name }}</td>
+      <td>{{ contact.user.first_name }} {{ contact.user.last_name }} (<strong>{{ contact.user.username }}</strong>) </td>
       <td>{{ contact.created_at }}</td>
       <td>{{ contact.reserved_for }}</td>
       <td>{{ contact.note }}</td>
