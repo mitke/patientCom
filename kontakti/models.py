@@ -17,6 +17,7 @@ class Patient(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     date_of_birth = models.DateField()
+    starost = models.CharField(blank=True, max_length=255)
     jmbg = models.CharField(
         max_length=13,
         blank=True,
