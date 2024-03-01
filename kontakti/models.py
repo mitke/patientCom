@@ -16,7 +16,8 @@ class Patient(models.Model):
     ou = models.ForeignKey(OU, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    date_of_birth = models.DateField()
+    date_of_birth = models.DateField(null=True, blank=True)
+    starost = models.CharField(blank=True, max_length=255)
     jmbg = models.CharField(
         max_length=13,
         blank=True,
@@ -29,10 +30,10 @@ class Patient(models.Model):
     )
     gender = models.BooleanField()
     email = models.EmailField(max_length=254, blank=True)
-    phone = models.CharField(max_length=50 )
+    phone = models.CharField(max_length=50)
     address = models.CharField(max_length=100, blank=True)
-    city = models.CharField(max_length=20)
-    state = models.CharField(max_length=20)
+    city = models.CharField(max_length=20, blank=True)
+    state = models.CharField(max_length=20, blank=True)
     zipcode = models.CharField(max_length=10, blank=True)
     doctor = models.CharField(max_length=50)
     diagnose = models.CharField(max_length=100)
