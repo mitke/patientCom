@@ -16,9 +16,9 @@
   <tr class="table-success">
     <th>Pacijent</th>
     <th>Datum rođenja (starost)</th>
+    <th>Starost</th>
     <th>doktor</th>
     <th>dijagnoza</th>
-    <th>anestezija</th>
     <th>poslednji kontakt</th>
     <th>&NonBreakingSpace;</th>
   </tr>
@@ -30,14 +30,9 @@
         {{ patient.first_name}} {{ patient.last_name}}
       </a></td>
     <td>{{ patient.date_of_birth|date:"d.m.Y" }} (<strong>{{ patient.age|floatformat:"1" }}</strong>)</td>
+    <td>{{ patient.starost }}</td>
     <td>{{ patient.doctor }}</td>
     <td>{{ patient.diagnose }}</td>
-    <td>{% if patient.anestezija == True %}
-      opšta
-      {% else %}
-      lokalna
-      {% endif %}
-    </td>
     <td>{{ patient.last_contact_date_time|date:"d.m.Y" }} {{ patient.last_contact_date_time|time:"H:i" }}</td>
     <td>
       <a class="btn btn-secondary" href="{% url 'edit_patient' patient.id %}">Promeni</a>
