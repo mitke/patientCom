@@ -14,10 +14,10 @@ from django.contrib.auth.decorators import login_required
 def index(request):
   if request.user.is_authenticated:
     user_profile = request.user.userprofile
-    patients = Patient.objects.filter(ou=user_profile.ou, active=True)#.order_by('last_name')
-    #patients = patients.annotate(
-        #last_contact_date_time=Max('contact__created_at')
-    #).order_by('last_contact_date_time')#[:40]
+    patients = Patient.objects.filter(ou=user_profile.ou, active=True)
+    patients = patients.annotate(
+        last_contact_date_time=Max('contact__created_at')
+    ).order_by('last_contact_date_time')#[:40]
 
     for patient in patients:
       dob = patient.date_of_birth
@@ -131,7 +131,7 @@ def delete_patient(request, patient_id):
 def search_patient(request):
   if request.method == 'POST':
     search_term = request.POST.get('search_term')
-    patients = Patient.objects.filter(Q(last_name__icontains=search_term) | Q(doctor__icontains=search_term))
+    patients = Patient.objects.filter(Q(active=True) & (Q(first_name__icontains=search_term) | Q(last_name__icontains=search_term) | Q(doctor__icontains=search_term)))
   
     return render(request, 'kontakti/index.html', {'patients': patients})
 
