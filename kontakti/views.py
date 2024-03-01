@@ -14,10 +14,10 @@ from django.contrib.auth.decorators import login_required
 def index(request):
   if request.user.is_authenticated:
     user_profile = request.user.userprofile
-    patients = Patient.objects.filter(ou=user_profile.ou, active=True)
-    patients = patients.annotate(
-        last_contact_date_time=Max('contact__created_at')
-    ).order_by('last_contact_date_time')#[:40]
+    patients = Patient.objects.filter(ou=user_profile.ou, active=True)#.order_by('last_name')
+    #patients = patients.annotate(
+        #last_contact_date_time=Max('contact__created_at')
+    #).order_by('last_contact_date_time')#[:40]
 
     for patient in patients:
       dob = patient.date_of_birth
@@ -68,11 +68,11 @@ def patient(request, patient_id):
   patient = Patient.objects.get(id=patient_id)
   contacts = Contact.objects.filter(patient=patient_id).order_by('-created_at')
   dob = patient.date_of_birth
-  today = datetime.now().date()
-  age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-  frac_years = (today - dob.replace(year=today.year)).days / 365.25
-  age_with_dec = age + frac_years
-  patient.age = age_with_dec # type: ignore
+  #today = datetime.now().date()
+  #age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+  #frac_years = (today - dob.replace(year=today.year)).days / 365.25
+  #age_with_dec = age + frac_years
+  patient.age = calculate_age(dob) 
   return render(
     request, 'kontakti/patient.html', {
       'patient': patient, 
