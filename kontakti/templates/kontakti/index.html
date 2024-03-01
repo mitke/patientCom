@@ -5,12 +5,16 @@
 {% block content %}
 
 <br>
+
 <h3>Pacijenti...</h3>
+
 <form action="{% url 'search' %} " class="col-md-3 pb-2 d-flex" role="search" method="post">
   {% csrf_token %}
   <input class="form-control me-6" type="text" name="search_term" placeholder="deo ili celo prezime">
-  <button class="btn btn-secondary" type="submit">Traži</button>
+  <button class="btn btn-secondary" type="submit">Traži</button>&NonBreakingSpace;
+  <a class="btn btn-secondary col-md-4" href="{% url 'add_patient'%}">Dodaj pacijenta</a>
 </form>
+</span>
 
 <table class="table table-striped table-bordered table-responsive-sm">
   <tr class="table-success">
@@ -19,7 +23,7 @@
     <th>Starost</th>
     <th>doktor</th>
     <th>dijagnoza</th>
-    <th>poslednji kontakt</th>
+    <th>prijavljen/zakazan</th>
     <th>&NonBreakingSpace;</th>
   </tr>
 
