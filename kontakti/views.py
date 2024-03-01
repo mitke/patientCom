@@ -17,7 +17,7 @@ def index(request):
     patients = Patient.objects.filter(ou=user_profile.ou, active=True)
     patients = patients.annotate(
         last_contact_date_time=Max('contact__created_at')
-    ).order_by('last_contact_date_time')[:40]
+    ).order_by('last_contact_date_time')#[:40]
 
     for patient in patients:
       dob = patient.date_of_birth
@@ -158,7 +158,12 @@ def add_contact(request, patient_id):
 
 def calculate_age(dob):
   today = datetime.now().date()
-  age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-  frac_year = (today-dob.replace(year=today.year)).days / 365.25
-  return age + frac_year
-  #patient.age = age_with_dec
+  try:
+    #age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+    #frac_years = (today - dob.replace(year=today.year)).days / 365.25
+    #return age + frac_years
+    return (today-dob).days / 365.25
+  except (AttributeError, TypeError):
+    return None
+
+  
