@@ -93,9 +93,9 @@ class AddContactForm(forms.ModelForm):
       'note': ''
     }
 
-    def save(self, commit=True):
-      instance = super(AddContactForm, self).save(commit=False)
-      instance.note = self.cleaned_data['note'].capitalize()
-      if commit:
-        instance.save()
-      return instance
+  def save(self, commit=True):
+    instance = super(AddContactForm, self).save(commit=False)
+    instance.note = self.cleaned_data['note'].capitalize()
+    if commit:
+      instance.save()
+    return instance
