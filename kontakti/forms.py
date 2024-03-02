@@ -65,6 +65,7 @@ class AddPatientForm(forms.ModelForm):
     instance.last_name = self.cleaned_data['last_name'].title()
     instance.doctor = self.cleaned_data['doctor'].title()
     instance.diagnose = self.cleaned_data['diagnose'].lower()
+    instance.note = self.cleaned_data['note'].capitalize()
     if commit:
       instance.save()
     return instance
@@ -91,3 +92,10 @@ class AddContactForm(forms.ModelForm):
       'reserved_for': 'Zakazano za:',
       'note': ''
     }
+
+    def save(self, commit=True):
+      instance = super(AddContactForm, self).save(commit=False)
+      instance.note = self.cleaned_data['note'].capitalize()
+      if commit:
+        instance.save()
+      return instance

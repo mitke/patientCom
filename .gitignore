@@ -160,3 +160,5 @@ cython_debug/
 #.idea/
 NOVI SPISAK ZAKAZIVANJA.xlsx
 kontakti/migrations/
+patientCom/__init__.py:wq
+
