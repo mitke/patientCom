@@ -161,6 +161,7 @@ cython_debug/
 NOVI SPISAK ZAKAZIVANJA.xlsx
 kontakti/migrations/
 <<<<<<< HEAD
+<<<<<<< HEAD
 db_opLista.patient.sql
 db_opLista.sql
 patientCom/__init__.py
@@ -169,3 +170,7 @@ p.csv
 patientCom/__init__.py:wq
 >>>>>>> 52da6e587e74ec66b80e989e41c7c497c29b33cd
 
+=======
+patientCom/__init__.py
+kontakti/templates/kontakti/patient copy.html
+>>>>>>> 7fb065d05d70b2c269f5f953eddfb5f1e2c65a54
