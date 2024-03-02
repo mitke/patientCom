@@ -49,7 +49,7 @@ class Contact(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    reserved_for = models.DateField()
+    reserved_for = models.DateField(null=True, blank=True)
     note = models.TextField(blank=True)
 
     def __str__(self) -> str:

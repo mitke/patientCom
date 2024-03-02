@@ -160,3 +160,7 @@ cython_debug/
 #.idea/
 NOVI SPISAK ZAKAZIVANJA.xlsx
 kontakti/migrations/
+db_opLista.patient.sql
+db_opLista.sql
+p.csv
+
