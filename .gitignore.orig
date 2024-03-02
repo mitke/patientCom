@@ -163,7 +163,6 @@ kontakti/migrations/
 <<<<<<< HEAD
 db_opLista.patient.sql
 db_opLista.sql
-patientCom/__init__.py
 p.csv
 =======
 patientCom/__init__.py:wq
