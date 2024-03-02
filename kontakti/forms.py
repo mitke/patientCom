@@ -11,7 +11,7 @@ class AddPatientForm(forms.ModelForm):
   class Meta:
     model = Patient
     #fields = '__all__'
-    exclude = ('active', 'ou')
+    exclude = ('starost', 'active', 'ou')
 
     requires = {
         'jmbg': 'False',
