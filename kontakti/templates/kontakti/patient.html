@@ -5,6 +5,36 @@
 {% block content %}
 
 <div class="container mt-3">
+  
+  {% if contacts %}
+
+  <h4>Kontakti: &NonBreakingSpace; <a class="btn btn-secondary" href="{% url 'add_contact' patient.id %}">Novi kontakt</a></h4>
+  <table class="table table-striped table-bordered table-responsive-sm">
+    <tr class="table-success">
+      <th>Kontaktirao/la pacijenta</th>
+      <th>Vreme kontakta</th>
+      <th>Zakazano za</th>
+      <th>Zabeleška</th>
+    </tr>
+    {% for contact in contacts %}
+    <tr>
+      <td>{{ contact.user.first_name }} {{ contact.user.last_name }} (<strong>{{ contact.user.username }}</strong>) </td>
+      <td>{{ contact.created_at }}</td>
+      <td>{{ contact.reserved_for }}</td>
+      <td>{{ contact.note }}</td>
+    </tr>
+
+
+    {% endfor %}
+  </table>
+  {% else %}
+  <p>
+    <a class="btn btn-secondary" href="{% url 'add_contact' patient.id %}">Novi kontakt</a>
+  </p>
+  {% endif %}
+
+  <hr>
+  
   <table class="table">
     <tr>
       <td>
@@ -88,34 +118,9 @@
     <a class="btn btn-secondary" href="{% url 'edit_patient' patient.id %}">Promeni</a>
     <a class="btn btn-danger" href="{% url 'delete_patient' patient.id %}" onclick="return confirm('Da li ste sigurni da želite da izbrišete pacijenta {{ patient }}?');">Izbriši</a>
   </p>
-  <hr>
+ 
 
-  {% if contacts %}
-
-  <h4>Kontakti: &NonBreakingSpace; <a class="btn btn-secondary" href="{% url 'add_contact' patient.id %}">Novi kontakt</a></h4>
-  <table class="table table-striped table-bordered table-responsive-sm">
-    <tr class="table-success">
-      <th>Kontaktirao/la pacijenta</th>
-      <th>Vreme kontakta</th>
-      <th>Zakazano za</th>
-      <th>Zabeleška</th>
-    </tr>
-    {% for contact in contacts %}
-    <tr>
-      <td>{{ contact.user.first_name }} {{ contact.user.last_name }} (<strong>{{ contact.user.username }}</strong>) </td>
-      <td>{{ contact.created_at }}</td>
-      <td>{{ contact.reserved_for }}</td>
-      <td>{{ contact.note }}</td>
-    </tr>
-
-
-    {% endfor %}
-  </table>
-  {% else %}
-  <p>
-    <a class="btn btn-secondary" href="{% url 'add_contact' patient.id %}">Novi kontakt</a>
-  </p>
-  {% endif %}
+  
 
 </div>
 {% endblock %}
