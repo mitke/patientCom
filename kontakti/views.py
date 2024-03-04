@@ -77,12 +77,7 @@ def user_logout(request):
 def patient(request, patient_id):
   patient = Patient.objects.get(id=patient_id)
   contacts = Contact.objects.filter(patient=patient_id).order_by('-created_at')
-  dob = patient.date_of_birth
-  #today = datetime.now().date()
-  #age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-  #frac_years = (today - dob.replace(year=today.year)).days / 365.25
-  #age_with_dec = age + frac_years
-  patient.age = calculate_age(dob) 
+  patient.age = calculate_age(patient.date_of_birth) 
   return render(
     request, 'kontakti/patient.html', {
       'patient': patient, 
@@ -130,7 +125,6 @@ def edit_patient(request, patient_id):
 @login_required
 def delete_patient(request, patient_id):
   patient = get_object_or_404(Patient, pk=patient_id)
-  #patient.delete()
   patient.active = False
   patient.save()
   messages.success(request, "Pacijent i svi kontakti sa njim su izbrisani iz baze")
@@ -143,7 +137,11 @@ def search_patient(request):
     patients = Patient.objects.filter(Q(active=True) & (Q(first_name__icontains=search_term) | Q(last_name__icontains=search_term)))
     for patient in patients:
       patient.age = calculate_age(patient.date_of_birth)
-    return render(request, 'kontakti/index.html', {'patients': patients})
+      try:
+        patient.rez = Contact.objects.filter(patient=patient).first().reserved_for
+      except AttributeError:
+        patient.rez = None 
+  return render(request, 'kontakti/index.html', {'patients': patients})
 
 
 @login_required
@@ -172,5 +170,7 @@ def calculate_age(dob):
     return (today-dob).days / 365.25
   except (AttributeError, TypeError):
     return None
+
+
 
   
