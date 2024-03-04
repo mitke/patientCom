@@ -21,12 +21,8 @@ def index(request):
 
     for patient in patients:
       dob = patient.date_of_birth
-      #today = datetime.now().date()
-      #age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-      #frac_year = (today-dob.replace(year=today.year)).days / 365.25
-      #age_with_dec = age + frac_year
-      #patient.age = age_with_dec
-      patient.age = calculate_age(dob)
+      patient.age = calculate_age(patient.date_of_birth)
+
     return render(request, 'kontakti/index.html', {'patients': patients})
   else:
     return redirect('login')  # Redirect to login page if user is not authenticated
@@ -35,7 +31,7 @@ def index(request):
 @login_required
 def reserved(request):
   user_ou = request.user.userprofile.ou
-  patients = Contact.objects.filter(patient__ou=user_ou, reserved_for__gt=date.today()).order_by('reserved_for')
+  patients = Contact.objects.filter(patient__ou=user_ou, reserved_for__gt=date.today()).order_by('-reserved_for')
   for patient in patients:
     dob = patient.patient.date_of_birth
     patient.patient.age = calculate_age(dob)

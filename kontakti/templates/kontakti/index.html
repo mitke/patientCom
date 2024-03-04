@@ -10,7 +10,7 @@
 
 <form action="{% url 'search' %} " class="col-md-4 pb-2 d-flex" role="search" method="post">
   {% csrf_token %}
-  <input class="form-control me-6" type="text" name="search_term" placeholder="deo ili celo prezime">
+  <input class="form-control me-6" type="text" name="search_term" placeholder="deo ili celo ime ili prezime">
   <button class="btn btn-secondary" type="submit">Traži</button>&NonBreakingSpace;
   <a class="btn btn-secondary col-md-4" href="{% url 'add_patient'%}">Dodaj pacijenta</a>
 </form>
@@ -23,8 +23,8 @@
     <th>Starost</th>
     <th>doktor</th>
     <th>dijagnoza</th>
-    <th>prijavljen/zakazan</th>
-    <th>&NonBreakingSpace;</th>
+    <th>prijavljen</th>
+    <th>zakazan</th>
   </tr>
 
   {% for patient in patients %}
@@ -37,11 +37,13 @@
     <td>{{ patient.starost }}</td>
     <td>{{ patient.doctor }}</td>
     <td>{{ patient.diagnose }}</td>
-    <td>{{ patient.last_contact_date_time|date:"d.m.Y" }} {{ patient.last_contact_date_time|time:"H:i" }}</td>
-    <td>
+    <!--<td>{{ patient.last_contact_date_time|date:"d.m.Y" }} {{ patient.last_contact_date_time|time:"H:i" }}</td>-->
+    <td>{{ patient.prijavljen }}</td>
+    <td>{{ patient.reserved_for }}</td>
+    <!--<td>
       <a class="btn btn-secondary" href="{% url 'edit_patient' patient.id %}">Promeni</a>
       <a class="btn btn-danger" href="{% url 'delete_patient' patient.id %}" onclick="return confirm('Da li ste sigurni da želite da izbrišete pacijenta {{ patient }}?');">Izbriši</a>
-    </td>
+    </td>-->
   </tr>
 
   {% endfor %}
