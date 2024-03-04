@@ -77,7 +77,6 @@ def patient(request, patient_id):
     request, 'kontakti/patient.html', {
       'patient': patient, 
       'contacts': contacts,
-      #'age_with_dec': age_with_dec,
       }
     )
 
@@ -131,8 +130,9 @@ def delete_patient(request, patient_id):
 def search_patient(request):
   if request.method == 'POST':
     search_term = request.POST.get('search_term')
-    patients = Patient.objects.filter(Q(active=True) & (Q(first_name__icontains=search_term) | Q(last_name__icontains=search_term) | Q(doctor__icontains=search_term)))
-  
+    patients = Patient.objects.filter(Q(active=True) & (Q(first_name__icontains=search_term) | Q(last_name__icontains=search_term)))
+    for patient in patients:
+      patient.age = calculate_age(patient.date_of_birth)
     return render(request, 'kontakti/index.html', {'patients': patients})
 
 
