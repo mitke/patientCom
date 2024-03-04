@@ -31,15 +31,15 @@
 
   <tr>
     <td><a href="{% url 'patient' patient.id %}">
-        {{ patient.first_name}} {{ patient.last_name}}
+        {{ patient.patient.first_name}} {{ patient.patient.last_name}}
       </a></td>
-    <td>{{ patient.date_of_birth|date:"d.m.Y" }} (<strong>{{ patient.age|floatformat:"1" }}</strong>)</td>
-    <td>{{ patient.starost }}</td>
-    <td>{{ patient.doctor }}</td>
-    <td>{{ patient.diagnose }}</td>
+    <td>{{ patient.patient.date_of_birth|date:"d.m.Y" }} (<strong>{{ patient.age|floatformat:"1" }}</strong>)</td>
+    <td>{{ patient.patient.starost }}</td>
+    <td>{{ patient.patient.doctor }}</td>
+    <td>{{ patient.patient.diagnose }}</td>
     <!--<td>{{ patient.last_contact_date_time|date:"d.m.Y" }} {{ patient.last_contact_date_time|time:"H:i" }}</td>-->
-    <td>{{ patient.prijavljen }}</td>
-    <td>{{ patient.reserved_for }}</td>
+    <td>{{ patient.patient.prijavljen }}</td>
+    <td>{{ patient.rez }}</td>
     <!--<td>
       <a class="btn btn-secondary" href="{% url 'edit_patient' patient.id %}">Promeni</a>
       <a class="btn btn-danger" href="{% url 'delete_patient' patient.id %}" onclick="return confirm('Da li ste sigurni da želite da izbrišete pacijenta {{ patient }}?');">Izbriši</a>

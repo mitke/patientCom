@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from .models import Patient, Contact, OU, UserProfile
-from django.db.models import Max, Q
+from django.db.models import Max, Min, Q
 from django.contrib import messages
 from .forms import AddPatientForm, AddContactForm
 from django.utils import timezone
@@ -14,14 +14,19 @@ from django.contrib.auth.decorators import login_required
 def index(request):
   if request.user.is_authenticated:
     user_profile = request.user.userprofile
-    patients = Patient.objects.filter(ou=user_profile.ou, active=True)
+    patients = Contact.objects.filter(patient__ou=user_profile.ou, patient__active=True)
+    '''patients = patients.annotate(
+      last_contact_date_time=Max('contact__created_at')
+    ).order_by('last_contact_date_time')#[:40]'''
     patients = patients.annotate(
-        last_contact_date_time=Max('contact__created_at')
-    ).order_by('last_contact_date_time')#[:40]
+      last_rezervisana_operacija=Min('reserved_for')
+    ).order_by('last_rezervisana_operacija')
+    
 
     for patient in patients:
-      dob = patient.date_of_birth
-      patient.age = calculate_age(patient.date_of_birth)
+      patient.age = calculate_age(patient.patient.date_of_birth)
+      patient.rez = patient.reserved_for
+      
 
     return render(request, 'kontakti/index.html', {'patients': patients})
   else:
@@ -31,11 +36,18 @@ def index(request):
 @login_required
 def reserved(request):
   user_ou = request.user.userprofile.ou
-  patients = Contact.objects.filter(patient__ou=user_ou, reserved_for__gt=date.today()).order_by('-reserved_for')
-  for patient in patients:
-    dob = patient.patient.date_of_birth
-    patient.patient.age = calculate_age(dob)
-  context = {'patients': patients}
+  latest_contacts = {}
+  patients = Contact.objects.filter(patient__ou=user_ou, reserved_for__gt=date.today()).order_by('reserved_for')
+  for contact in patients:
+    patient_id = contact.patient.id
+    if patient_id not in latest_contacts or contact.reserved_for > latest_contacts[patient_id].reserved_for:
+      latest_contacts[patient_id] = contact
+  
+  for contact in latest_contacts.values():
+    dob = contact.patient.date_of_birth
+    contact.patient.age = calculate_age(dob)
+  
+  context = {'patients': latest_contacts.values()}
   return render (request, 'kontakti/reserved.html', context)
 
 
