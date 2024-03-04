@@ -14,18 +14,20 @@ from django.contrib.auth.decorators import login_required
 def index(request):
   if request.user.is_authenticated:
     user_profile = request.user.userprofile
-    patients = Contact.objects.filter(patient__ou=user_profile.ou, patient__active=True)
+    patients = Patient.objects.filter(ou=user_profile.ou, active=True)
     '''patients = patients.annotate(
       last_contact_date_time=Max('contact__created_at')
     ).order_by('last_contact_date_time')#[:40]'''
     patients = patients.annotate(
-      last_rezervisana_operacija=Min('reserved_for')
+      last_rezervisana_operacija=Min('contact__reserved_for')
     ).order_by('last_rezervisana_operacija')
-    
 
     for patient in patients:
-      patient.age = calculate_age(patient.patient.date_of_birth)
-      patient.rez = patient.reserved_for
+      patient.age = calculate_age(patient.date_of_birth)
+      try:
+        patient.rez = Contact.objects.filter(patient=patient).first().reserved_for
+      except AttributeError:
+        patient.rez = None
       
 
     return render(request, 'kontakti/index.html', {'patients': patients})
@@ -167,9 +169,6 @@ def add_contact(request, patient_id):
 def calculate_age(dob):
   today = datetime.now().date()
   try:
-    #age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-    #frac_years = (today - dob.replace(year=today.year)).days / 365.25
-    #return age + frac_years
     return (today-dob).days / 365.25
   except (AttributeError, TypeError):
     return None
