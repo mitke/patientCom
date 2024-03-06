@@ -187,18 +187,39 @@ def calculate_age(dob):
   Parameters:
   dob (datetime): The date of birth in datetime format.
 
+<<<<<<< HEAD
   Returns:
   tuple: A tuple containing the calculated age in years and months.
   """
   today = datetime.now().date()
   try:
     """years = today.year - dob.year
+=======
+    Returns:
+    tuple: A tuple containing the age in years and months (e.g. (years, months)),
+           or (None, None) if there was an error.
+    """
+    '''today = datetime.now().date()
+    try:
+      years = today.year - dob.year
+>>>>>>> 8d5210e009ffcf5d21f13e91de703dc9e3d7d35a
       months = today.month - dob.month
       if today.day < dob.day:
           months -= 1
       while months < 0:
           years -= 1
+<<<<<<< HEAD
           months += 12"""
+=======
+          months += 12
+      return years, months
+    except (AttributeError, TypeError):
+      return None, None'''
+    
+def calculate_age(dob):
+  today = datetime.now().date()
+  try:
+>>>>>>> 8d5210e009ffcf5d21f13e91de703dc9e3d7d35a
     yearsFrac = (today-dob).days / 365.25
     year = int(yearsFrac)
     months = round((yearsFrac - year) * 12)
