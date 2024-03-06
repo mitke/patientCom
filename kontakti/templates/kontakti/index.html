@@ -49,8 +49,8 @@
     <td>{{ patient.doctor }}</td>
     <td>{{ patient.diagnose }}</td>
     <!--<td>{{ patient.last_contact_date_time|date:"d.m.Y" }} {{ patient.last_contact_date_time|time:"H:i" }}</td>-->
-    <td>{{ patient.prijavljen }}</td>
-    <td>{{ patient.rez }}</td>
+    <td>{{ patient.prijavljen|date:"d.m.Y" }}</td>
+    <td>{{ patient.rez|date:"d.m.Y" }}</td>
   </tr>
 
   {% endfor %}
