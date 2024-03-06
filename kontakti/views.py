@@ -1,3 +1,4 @@
+from unittest import mock
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
@@ -178,30 +179,32 @@ def add_contact(request, patient_id):
     context = {'patient': pacijent, 'form': form}
     return render(request, 'kontakti/add_contact.html', context)
 
-
+    
 def calculate_age(dob):
-    """
-    Calculate the age based on the date of birth provided, in years and months.
+  """
+  Calculate the age based on the provided date of birth.
 
-    Parameters:
-    dob (datetime.date): The date of birth to calculate the age from.
+  Parameters:
+  dob (datetime): The date of birth in datetime format.
 
-    Returns:
-    tuple: A tuple containing the age in years and months (e.g. (years, months)),
-           or (None, None) if there was an error.
-    """
-    today = datetime.now().date()
-    try:
-        years = today.year - dob.year
-        months = today.month - dob.month
-        if today.day < dob.day:
-            months -= 1
-        while months < 0:
-            years -= 1
-            months += 12
-        return years, months
-    except (AttributeError, TypeError):
-        return None, None
+  Returns:
+  tuple: A tuple containing the calculated age in years and months.
+  """
+  today = datetime.now().date()
+  try:
+    """years = today.year - dob.year
+      months = today.month - dob.month
+      if today.day < dob.day:
+          months -= 1
+      while months < 0:
+          years -= 1
+          months += 12"""
+    yearsFrac = (today-dob).days / 365.25
+    year = int(yearsFrac)
+    months = round((yearsFrac - year) * 12)
+    return (year, months)
+  except (AttributeError, TypeError):
+    return None
 
 
 

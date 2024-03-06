@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="container mt-3">
-  
+
   {% if contacts %}
 
   <h4>Kontakti: &NonBreakingSpace; <a class="btn btn-secondary" href="{% url 'add_contact' patient.id %}">Novi kontakt</a></h4>
@@ -18,7 +18,8 @@
     </tr>
     {% for contact in contacts %}
     <tr>
-      <td>{{ contact.user.first_name }} {{ contact.user.last_name }} (<strong>{{ contact.user.username }}</strong>) </td>
+      <td>{{ contact.user.first_name }} {{ contact.user.last_name }} (<strong>{{ contact.user.username }}</strong>)
+      </td>
       <td>{{ contact.created_at }}</td>
       <td>{{ contact.reserved_for }}</td>
       <td>{{ contact.note }}</td>
@@ -34,7 +35,7 @@
   {% endif %}
 
   <hr>
-  
+
   <table class="table">
     <tr>
       <td>
@@ -46,7 +47,15 @@
       <td>
         <h5>Datum rođenja (starost)</h5>
       </td>
-      <td>{{ patient.date_of_birth|date:"d.m.Y" }} <strong>({{ patient.age|floatformat:"1" }} god.)</strong> </td>
+      <td>{{ patient.date_of_birth|date:"d.m.Y" }}
+        ({% if patient.age.0 == 0 %}
+        <strong>{{ patient.age.1 }}mes.</strong>
+        {% elif patient.age.1 == 0 %}
+        <strong>{{ patient.age.0 }}god.</strong>
+        {% else %}
+        <strong>{{ patient.age.0 }}god, {{ patient.age.1 }}mes.</strong>
+        {% endif %})
+      </td>
     </tr>
     <tr>
       <td>
@@ -124,9 +133,9 @@
     <a class="btn btn-secondary" href="{% url 'edit_patient' patient.id %}">Promeni</a>
     <a class="btn btn-danger" href="{% url 'delete_patient' patient.id %}" onclick="return confirm('Da li ste sigurni da želite da izbrišete pacijenta {{ patient }}?');">Izbriši</a>
   </p>
- 
 
-  
+
+
 
 </div>
 {% endblock %}
