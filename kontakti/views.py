@@ -197,6 +197,9 @@ def calculate_age(dob):
     yearsFrac = (today-dob).days / 365.25
     year = int(yearsFrac)
     months = round((yearsFrac - year) * 12)
+    if months == 12:
+      year += 1
+      months = 0
     return (year, months)
   except (AttributeError, TypeError):
     return None
