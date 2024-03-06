@@ -48,6 +48,7 @@
         <h5>Datum rođenja (starost)</h5>
       </td>
       <td>{{ patient.date_of_birth|date:"d.m.Y" }}
+        {% if patient.age %}
         ({% if patient.age.0 == 0 %}
         <strong>{{ patient.age.1 }}mes.</strong>
         {% elif patient.age.1 == 0 %}
@@ -55,6 +56,7 @@
         {% else %}
         <strong>{{ patient.age.0 }}god, {{ patient.age.1 }}mes.</strong>
         {% endif %})
+        {% endif %}
       </td>
     </tr>
     <tr>

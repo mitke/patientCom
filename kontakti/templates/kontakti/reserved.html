@@ -24,6 +24,7 @@
         {{ patient.patient.first_name}} {{ patient.patient.last_name}}
       </a></td>
     <td>{{ patient.patient.date_of_birth|date:"d.m.Y" }}
+      {% if patient.patient.age %}
       ({% if patient.patient.age.0 == 0 %}
       <strong>{{ patient.patient.age.1 }}mes.</strong>
       {% elif patient.patient.age.1 == 0 %}
@@ -31,6 +32,7 @@
       {% else %}
       <strong>{{ patient.patient.age.0 }}god, {{ patient.patient.age.1 }}mes.</strong>
       {% endif %})
+      {% endif %}
     </td>
     <td>{{ patient.patient.doctor }}</td>
     <td>{{ patient.patient.diagnose }}</td>
