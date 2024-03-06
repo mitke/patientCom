@@ -12,6 +12,9 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def index(request):
+  """
+  Index view function for the application. Requires the user to be logged in. If the user is authenticated, it retrieves the user profile and a list of patients associated with the user's organization unit. It then calculates the age of each patient and retrieves reservation information. Finally, it renders the 'kontakti/index.html' template with the list of patients. If the user is not authenticated, it redirects to the login page.
+  """
   if request.user.is_authenticated:
     user_profile = request.user.userprofile
     patients = Patient.objects.filter(ou=user_profile.ou, active=True)
@@ -37,6 +40,9 @@ def index(request):
 
 @login_required
 def reserved(request):
+  """
+  This function requires the user to be logged in. It retrieves the user's organizational unit (ou), then retrieves a list of reserved contacts for patients in that ou, ordered by reservation date. It then calculates the age of each patient and returns a context containing the patients for rendering the 'reserved.html' template.
+  """
   user_ou = request.user.userprofile.ou
   latest_contacts = {}
   patients = Contact.objects.filter(patient__ou=user_ou, reserved_for__gt=date.today()).order_by('reserved_for')
@@ -132,6 +138,15 @@ def delete_patient(request, patient_id):
 
 
 def search_patient(request):
+  """
+  Search for patients based on the search term provided in the request.
+  
+  Parameters:
+  - request: The request object containing the search term in the POST data.
+  
+  Returns:
+  - Renders the 'kontakti/index.html' template with the filtered patients.
+  """
   if request.method == 'POST':
     search_term = request.POST.get('search_term')
     patients = Patient.objects.filter(Q(active=True) & (Q(first_name__icontains=search_term) | Q(last_name__icontains=search_term)))
@@ -165,11 +180,28 @@ def add_contact(request, patient_id):
 
 
 def calculate_age(dob):
-  today = datetime.now().date()
-  try:
-    return (today-dob).days / 365.25
-  except (AttributeError, TypeError):
-    return None
+    """
+    Calculate the age based on the date of birth provided, in years and months.
+
+    Parameters:
+    dob (datetime.date): The date of birth to calculate the age from.
+
+    Returns:
+    tuple: A tuple containing the age in years and months (e.g. (years, months)),
+           or (None, None) if there was an error.
+    """
+    today = datetime.now().date()
+    try:
+        years = today.year - dob.year
+        months = today.month - dob.month
+        if today.day < dob.day:
+            months -= 1
+        while months < 0:
+            years -= 1
+            months += 12
+        return years, months
+    except (AttributeError, TypeError):
+        return None, None
 
 
 
