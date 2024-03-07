@@ -8,7 +8,7 @@ from django.db.models import Max, Min, Q
 from django.contrib import messages
 from .forms import AddPatientForm, AddContactForm
 from django.utils import timezone
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from django.contrib.auth.decorators import login_required
 
 @login_required
@@ -29,9 +29,9 @@ def index(request):
     for patient in patients:
       patient.age = calculate_age(patient.date_of_birth)
       try:
-        patient.rez = Contact.objects.filter(patient=patient).first().reserved_for
+        patient.rez = date_range(Contact.objects.filter(patient=patient).last().reserved_for)
       except AttributeError:
-        patient.rez = None
+        patient.rez = "Nije zakazano"
       
 
     return render(request, 'kontakti/index.html', {'patients': patients})
@@ -55,7 +55,7 @@ def reserved(request):
   for contact in latest_contacts.values():
     dob = contact.patient.date_of_birth
     contact.patient.age = calculate_age(dob)
-  
+    contact.patient.rez = date_range(contact.reserved_for)
   context = {'patients': latest_contacts.values()}
   return render (request, 'kontakti/reserved.html', context)
 
@@ -154,9 +154,9 @@ def search_patient(request):
     for patient in patients:
       patient.age = calculate_age(patient.date_of_birth)
       try:
-        patient.rez = Contact.objects.filter(patient=patient).first().reserved_for
+        patient.rez = date_range(Contact.objects.filter(patient=patient).last().reserved_for)
       except AttributeError:
-        patient.rez = None 
+        patient.rez = "Nije zakazano" 
   return render(request, 'kontakti/index.html', {'patients': patients})
 
 
@@ -205,5 +205,5 @@ def calculate_age(dob):
     return None
 
 
-
-  
+def date_range(start_date):
+  return f"{str(start_date.day).zfill(2)}-{str(start_date.day+4).zfill(2)}.{str(start_date.month).zfill(2)}.{start_date.year}."
