@@ -84,6 +84,8 @@ def user_logout(request):
 def patient(request, patient_id):
   patient = Patient.objects.get(id=patient_id)
   contacts = Contact.objects.filter(patient=patient_id).order_by('-created_at')
+  for contact in contacts:
+    contact.reserved_for = date_range(contact.reserved_for)
   patient.age = calculate_age(patient.date_of_birth) 
   return render(
     request, 'kontakti/patient.html', {

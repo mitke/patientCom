@@ -14,14 +14,14 @@
       <th>Kontaktirao/la pacijenta</th>
       <th>Vreme kontakta</th>
       <th>Zakazano za</th>
-      <th>Zabeleška</th>
+      <th>Napomena</th>
     </tr>
     {% for contact in contacts %}
     <tr>
       <td>{{ contact.user.first_name }} {{ contact.user.last_name }} (<strong>{{ contact.user.username }}</strong>)
       </td>
       <td>{{ contact.created_at|date:"d.m.Y H:i" }}</td>
-      <td>{{ contact.reserved_for|date:"d.m.Y" }}</td>
+      <td>{{ contact.reserved_for }}</td>
       <td>{{ contact.note }}</td>
     </tr>
 
