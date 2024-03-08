@@ -224,7 +224,7 @@ def calculate_age(dob):
     return None
 
 
-def format_date(id):
+'''def format_date(id):
   print(id)
   try:
     rdate = Contact.objects.filter(patient__id=id).last().reserved_for
@@ -234,7 +234,7 @@ def format_date(id):
       print(f"rdate posle datea_range {rdate}")
       return rdate
   except AttributeError:
-    return "Nije zakazano"
+    return "Nije zakazano"'''
 
 def date_range(start_date):
   """
