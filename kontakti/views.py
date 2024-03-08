@@ -32,8 +32,6 @@ def index(request):
         patient.rez = date_range(Contact.objects.filter(patient=patient).last().reserved_for)
       except AttributeError:
         patient.rez = "Nije zakazano"
-      
-
     return render(request, 'kontakti/index.html', {'patients': patients})
   else:
     return redirect('login')  # Redirect to login page if user is not authenticated
@@ -65,8 +63,8 @@ def nextWeek(request):
   user_ou = request.user.userprofile.ou
   today = date.today()
   next_monday = today + timedelta(days=(0 - today.weekday())%7)
-  '''patients = Contact.objects.filter(patient__ou=user_ou, reserved_for=next_monday).order_by('patient__last_name')'''
-  patients = Contact.objects.filter(patient__ou=user_ou, reserved_for=next_monday).extra(select={'sort_key': "CONVERT(last_name USING utf8)"}).order_by('sort_key')
+  patients = Contact.objects.filter(patient__ou=user_ou, reserved_for=next_monday).order_by('patient__last_name')
+  '''patients = Contact.objects.filter(patient__ou=user_ou, reserved_for=next_monday).extra(select={'sort_key': "CONVERT(last_name USING utf8)"}).order_by('sort_key')'''
   for contact in patients:
     dob = contact.patient.date_of_birth
     contact.patient.age = calculate_age(dob)
@@ -170,10 +168,13 @@ def search_patient(request):
     patients = Patient.objects.filter(Q(active=True) & (Q(first_name__icontains=search_term) | Q(last_name__icontains=search_term)))
     for patient in patients:
       patient.age = calculate_age(patient.date_of_birth)
-      try:
-        patient.rez = date_range(Contact.objects.filter(patient=patient).last().reserved_for)
+      patient.rez = format_date(patient.id)
+      '''try:
+        patient.rez = Contact.objects.filter(patient=patient).last().reserved_for
+        if patient.rez.weekday() == 0:
+          patient.rez = date_range(Contact.objects.filter(patient=patient).last().reserved_for)
       except AttributeError:
-        patient.rez = "Nije zakazano" 
+        patient.rez = "Nije zakazano" '''
   return render(request, 'kontakti/index.html', {'patients': patients})
 
 
@@ -221,6 +222,18 @@ def calculate_age(dob):
   except (AttributeError, TypeError):
     return None
 
+
+def format_date(id):
+  print(id)
+  try:
+    rdate = Contact.objects.filter(patient__id=id).last().reserved_for
+    print(f"rdate.weekday = {rdate.weekday()}")
+    if rdate.weekday() == 0:
+      rdate = date_range(rdate)
+      print(f"rdate posle datea_range {rdate}")
+      return rdate
+  except AttributeError:
+    return "Nije zakazano"
 
 def date_range(start_date):
   """
