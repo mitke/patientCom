@@ -25,12 +25,11 @@
       </a></td>
     <td>{{ patient.patient.date_of_birth|date:"d.m.Y" }}
       {% if patient.patient.age %}
-      ({% if patient.patient.age.0 == 0 %}
-      <strong>{{ patient.patient.age.1 }}mes.</strong>
-      {% elif patient.patient.age.1 == 0 %}
+      ({% if patient.patient.age.0 != 0 %}
       <strong>{{ patient.patient.age.0 }}god.</strong>
-      {% else %}
-      <strong>{{ patient.patient.age.0 }}god, {{ patient.patient.age.1 }}mes.</strong>
+      {% endif %}
+      {% if patient.patient.age.1 != 0 %}
+      <strong>{{ patient.patient.age.0 }}mes.</strong>
       {% endif %})
       {% endif %}
     </td>

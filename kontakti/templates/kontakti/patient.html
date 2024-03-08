@@ -49,14 +49,14 @@
       </td>
       <td>{{ patient.date_of_birth|date:"d.m.Y" }}
         {% if patient.age %}
-        ({% if patient.age.0 == 0 %}
-        <strong>{{ patient.age.1 }}mes.</strong>
-        {% elif patient.age.1 == 0 %}
-        <strong>{{ patient.age.0 }}god.</strong>
-        {% else %}
-        <strong>{{ patient.age.0 }}god, {{ patient.age.1 }}mes.</strong>
+        ({% if patient.age.0 != 0 %}
+        <strong>{{ patient.age.1 }}god.</strong>
+        {% endif %}
+        {% if patient.age.1 != 0 %}
+        <strong>{{ patient.age.0 }}mes.</strong>
         {% endif %})
         {% endif %}
+
       </td>
     </tr>
     <tr>

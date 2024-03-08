@@ -223,4 +223,17 @@ def calculate_age(dob):
 
 
 def date_range(start_date):
-  return f"{str(start_date.day).zfill(2)}-{str(start_date.day+4).zfill(2)}.{str(start_date.month).zfill(2)}.{start_date.year}."
+  """
+  Calculate the end date based on the start date and return a formatted date range string.
+  """
+  end_date = start_date + timedelta(days=4)
+  if start_date.year == end_date.year:
+    if start_date.month == end_date.month:
+      return f"{str(start_date.day).zfill(2)}-{str(end_date.day).zfill(2)}.{str(start_date.month).zfill(2)}.{start_date.year}."
+    else:
+      return f"{str(start_date.day).zfill(2)}.{str(start_date.month).zfill(2)}-{str(end_date.day).zfill(2)}.{str(end_date.month).zfill(2)}.{start_date.year}."
+  else:
+    return f"{str(start_date.day).zfill(2)}.{str(start_date.month).zfill(2)}.{start_date.year}-{str(end_date.day).zfill(2)}.{str(end_date.month).zfill(2)}.{end_date.year}."
+
+
+
