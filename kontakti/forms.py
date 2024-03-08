@@ -85,7 +85,7 @@ class AddContactForm(forms.ModelForm):
     fields = ['reserved_for', 'note']
 
     widgets = {
-      'reserved_for': DateInput(attrs={'type': 'date'}),
+      'reserved_for': DateInput(attrs={'type': 'date', 'id': 'id_reserved_for'}),
       'note': forms.Textarea(attrs={'class': "form-control", 'placeholder': 'Napomena o kontaktu', 'cols': 200, 'rows': 4, 'style': 'width: 100%'})
     }
     labels = {

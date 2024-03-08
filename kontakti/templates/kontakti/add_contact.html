@@ -12,6 +12,19 @@
     {{ form.as_p }}
     <button type="submit" class="btn btn-secondary">Dodaj</button>
   </form>
-  {% endblock %}
+
 
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('id_reserved_for').addEventListener('change', function () {
+      var selectedDate = new Date(this.value);
+      if (selectedDate.getDay() !== 1) {
+        alert('Please note that reservations should be made for Mondays.');
+      }
+    });
+  });
+</script>
+
+{% endblock %}
