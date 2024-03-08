@@ -224,18 +224,6 @@ def calculate_age(dob):
     return None
 
 
-'''def format_date(id):
-  print(id)
-  try:
-    rdate = Contact.objects.filter(patient__id=id).last().reserved_for
-    print(f"rdate.weekday = {rdate.weekday()}")
-    if rdate.weekday() == 0:
-      rdate = date_range(rdate)
-      print(f"rdate posle datea_range {rdate}")
-      return rdate
-  except AttributeError:
-    return "Nije zakazano"'''
-
 def date_range(start_date):
   """
   Calculate the end date based on the start date and return a formatted date range string.
