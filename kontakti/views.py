@@ -30,6 +30,7 @@ def index(request):
       patient.age = calculate_age(patient.date_of_birth)
       try:
         patient.rez = date_range(Contact.objects.filter(patient=patient).last().reserved_for)
+        print(f"date_range = {patient.rez}")
       except AttributeError:
         patient.rez = "Nije zakazano"
     return render(request, 'kontakti/index.html', {'patients': patients})
@@ -168,13 +169,13 @@ def search_patient(request):
     patients = Patient.objects.filter(Q(active=True) & (Q(first_name__icontains=search_term) | Q(last_name__icontains=search_term)))
     for patient in patients:
       patient.age = calculate_age(patient.date_of_birth)
-      patient.rez = format_date(patient.id)
-      '''try:
+      #patient.rez = format_date(patient.id)
+      try:
         patient.rez = Contact.objects.filter(patient=patient).last().reserved_for
         if patient.rez.weekday() == 0:
           patient.rez = date_range(Contact.objects.filter(patient=patient).last().reserved_for)
       except AttributeError:
-        patient.rez = "Nije zakazano" '''
+        patient.rez = "Nije zakazano"
   return render(request, 'kontakti/index.html', {'patients': patients})
 
 
