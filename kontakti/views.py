@@ -31,7 +31,7 @@ def index(request):
       try:
         patient.rez = date_range(Contact.objects.filter(patient=patient).last().reserved_for)
         print(f"date_range = {patient.rez}")
-      except AttributeError:
+      except (AttributeError, TypeError):
         patient.rez = "Nije zakazano"
     return render(request, 'kontakti/index.html', {'patients': patients})
   else:
@@ -174,7 +174,7 @@ def search_patient(request):
         patient.rez = Contact.objects.filter(patient=patient).last().reserved_for
         if patient.rez.weekday() == 0:
           patient.rez = date_range(Contact.objects.filter(patient=patient).last().reserved_for)
-      except AttributeError:
+      except (AttributeError, TypeError):
         patient.rez = "Nije zakazano"
   return render(request, 'kontakti/index.html', {'patients': patients})
 
