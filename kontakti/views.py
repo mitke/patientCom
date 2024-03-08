@@ -60,6 +60,21 @@ def reserved(request):
   return render (request, 'kontakti/reserved.html', context)
 
 
+@login_required
+def nextWeek(request):
+  user_ou = request.user.userprofile.ou
+  today = date.today()
+  next_monday = today + timedelta(days=(0 - today.weekday())%7)
+  '''patients = Contact.objects.filter(patient__ou=user_ou, reserved_for=next_monday).order_by('patient__last_name')'''
+  patients = Contact.objects.filter(patient__ou=user_ou, reserved_for=next_monday).extra(select={'sort_key': "CONVERT(last_name USING utf8)"}).order_by('sort_key')
+  for contact in patients:
+    dob = contact.patient.date_of_birth
+    contact.patient.age = calculate_age(dob)
+    contact.patient.rez = date_range(contact.reserved_for)
+  context = {'patients': patients}
+  return render (request, 'kontakti/reserved.html', context)
+
+
 def user_login(request):
   if request.method == 'POST':
     form = AuthenticationForm(request, data=request.POST)
