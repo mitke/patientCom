@@ -28,11 +28,8 @@ def index(request):
 
     for patient in patients:
       patient.age = calculate_age(patient.date_of_birth)
-      try:
-        patient.rez = date_range(Contact.objects.filter(patient=patient).last().reserved_for)
-        print(f"date_range = {patient.rez}")
-      except (AttributeError, TypeError):
-        patient.rez = "Nije zakazano"
+      patient.rez = date_range(get_patient_rez(patient.id))
+      
     return render(request, 'kontakti/index.html', {'patients': patients})
   else:
     return redirect('login')  # Redirect to login page if user is not authenticated
@@ -169,13 +166,7 @@ def search_patient(request):
     patients = Patient.objects.filter(Q(active=True) & (Q(first_name__icontains=search_term) | Q(last_name__icontains=search_term)))
     for patient in patients:
       patient.age = calculate_age(patient.date_of_birth)
-      #patient.rez = format_date(patient.id)
-      try:
-        patient.rez = Contact.objects.filter(patient=patient).last().reserved_for
-        if patient.rez.weekday() == 0:
-          patient.rez = date_range(Contact.objects.filter(patient=patient).last().reserved_for)
-      except (AttributeError, TypeError):
-        patient.rez = "Nije zakazano"
+      patient.rez = date_range(get_patient_rez(patient.id))
   return render(request, 'kontakti/index.html', {'patients': patients})
 
 
@@ -228,14 +219,25 @@ def date_range(start_date):
   """
   Calculate the end date based on the start date and return a formatted date range string.
   """
-  end_date = start_date + timedelta(days=4)
-  if start_date.year == end_date.year:
-    if start_date.month == end_date.month:
-      return f"{str(start_date.day).zfill(2)}-{str(end_date.day).zfill(2)}.{str(start_date.month).zfill(2)}.{start_date.year}."
+  try:
+    if start_date.weekday() != 0:
+      end_date = start_date + timedelta(days=4)
+      if start_date.year == end_date.year:
+        if start_date.month == end_date.month:
+          return f"{str(start_date.day).zfill(2)}-{str(end_date.day).zfill(2)}.{str(start_date.month).zfill(2)}.{start_date.year}."
+        else:
+          return f"{str(start_date.day).zfill(2)}.{str(start_date.month).zfill(2)}-{str(end_date.day).zfill(2)}.{str(end_date.month).zfill(2)}.{start_date.year}."
+      else:
+        return f"{str(start_date.day).zfill(2)}.{str(start_date.month).zfill(2)}.{start_date.year}-{str(end_date.day).zfill(2)}.{str(end_date.month).zfill(2)}.{end_date.year}."
     else:
-      return f"{str(start_date.day).zfill(2)}.{str(start_date.month).zfill(2)}-{str(end_date.day).zfill(2)}.{str(end_date.month).zfill(2)}.{start_date.year}."
-  else:
-    return f"{str(start_date.day).zfill(2)}.{str(start_date.month).zfill(2)}.{start_date.year}-{str(end_date.day).zfill(2)}.{str(end_date.month).zfill(2)}.{end_date.year}."
+      return  f"{str(start_date.day).zfill(2)}.{str(start_date.month).zfill(2)}.{start_date.year}"
+  except (TypeError, AttributeError):
+    return "Nije zakazano"
+  
 
-
+def get_patient_rez(patient_id):
+    try:
+        return Contact.objects.filter(patient_id=patient_id).first().reserved_for
+    except AttributeError:
+        return "Nije zakazano"
 
