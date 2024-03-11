@@ -220,7 +220,7 @@ def date_range(start_date):
   Calculate the end date based on the start date and return a formatted date range string.
   """
   try:
-    if start_date.weekday() != 0:
+    if start_date.weekday() == 0:
       end_date = start_date + timedelta(days=4)
       if start_date.year == end_date.year:
         if start_date.month == end_date.month:
