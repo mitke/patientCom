@@ -187,7 +187,23 @@ def add_contact(request, patient_id):
       form = AddContactForm()
 
     context = {'patient': pacijent, 'form': form}
-    return render(request, 'kontakti/add_contact.html', context)
+    return render(request, 'kontakti/add-upd_contact.html', context)
+
+
+@login_required
+def edit_contact(request, patient_id, contact_id):
+  contact_to_edit = get_object_or_404(Contact, id=contact_id)
+  edit_mode = True
+  form = AddContactForm(request.POST or None, instance=contact_to_edit)
+
+  if form.is_valid():
+    form.save()
+    messages.success(request, "Podaci o kontaktu su uspešno promenjeni")
+    return redirect('patient', patient_id)
+  else:
+    form = AddContactForm(instance=contact_to_edit)
+
+  return render(request, 'kontakti/add-upd_contact.html', {'form': form, 'edit_mode': edit_mode})
 
     
 def calculate_age(dob):

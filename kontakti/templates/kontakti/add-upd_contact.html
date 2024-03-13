@@ -6,11 +6,22 @@
 <br>
 <div>
 
+  {% if edit_mode %}
+  <h1>Promeni podatke o kontaktu</h1>
+  {% else %}
   <h1>Novi kontakt</h1>
+  {% endif %}
+
   <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
+
+    {% if edit_mode %}
+    <button type="submit" class="btn btn-secondary">Promeni</button>
+    {% else %}
     <button type="submit" class="btn btn-secondary">Dodaj</button>
+    {% endif %}
+
   </form>
 
 

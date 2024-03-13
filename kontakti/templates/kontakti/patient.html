@@ -15,6 +15,7 @@
       <th>Vreme kontakta</th>
       <th>Zakazano za</th>
       <th>Napomena</th>
+      <th>&NonBreakingSpace;</th>
     </tr>
     {% for contact in contacts %}
     <tr>
@@ -23,6 +24,7 @@
       <td>{{ contact.created_at|date:"d.m.Y H:i" }}</td>
       <td>{{ contact.reserved_for }}</td>
       <td>{{ contact.note }}</td>
+      <td><a class="btn btn-secondary" href="{% url 'edit_contact' contact.patient_id contact.id %}">Promeni</a></td>
     </tr>
 
 
